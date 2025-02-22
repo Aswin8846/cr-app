@@ -5,8 +5,6 @@ import * as Font from 'expo-font';
 import axios from 'axios';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
-import AnimationComponent from '../components/AnimationComponent';
-import LoadingMessage from '../components/LoadingMessage';
 
 const SearchPage = () => {
   const [fontsLoaded, setFontsLoaded] = useState(false);
@@ -58,25 +56,6 @@ const SearchPage = () => {
     }
   }, []);
 
-  // const takePhoto = useCallback(async () => {
-  //   const { status } = await ImagePicker.requestCameraPermissionsAsync();
-  //   if (status !== 'granted') {
-  //     Alert.alert('Permission Denied', 'Please grant permission to access the camera.');
-  //     return;
-  //   }
-
-  //   let result = await ImagePicker.launchImageLibraryAsync({
-  //     mediaTypes: [ImagePicker.MediaType.IMAGE], // Fixed here
-  //     allowsEditing: true,
-  //     aspect: [4, 3],
-  //     quality: 1,
-  //   });
-
-  //   if (!result.canceled) {
-  //     processImage(result.assets[0].uri);
-  //   }
-  // }, []);
-
   const takePhoto = useCallback(async () => {
     const { status } = await ImagePicker.requestCameraPermissionsAsync();
     if (status !== 'granted') {
@@ -108,7 +87,7 @@ const SearchPage = () => {
     });
 
     try {
-      const response = await axios.post("https://f863-2406-7400-bb-7d6d-fba2-a3ca-4f82-79a0.ngrok-free.app/upload", formData, {
+      const response = await axios.post("Replace your url or ngrok /upload", formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -118,7 +97,7 @@ const SearchPage = () => {
         const data = response.data;
         const matchedImagesData = data.matched_images || [];
         const matchedImagesUrls = matchedImagesData.map((imageData) => ({
-          url: `https://f863-2406-7400-bb-7d6d-fba2-a3ca-4f82-79a0.ngrok-free.app/matched-images/${imageData.file_name}`,
+          url: `Replace with your url or ngrok /matched-images/${imageData.file_name}`,
           matchRate: imageData.match_rate,
         }));
 
@@ -127,50 +106,13 @@ const SearchPage = () => {
       } else {
         console.error("Failed to upload image");
       }
-    } catch (error) {
+    } catch (error) {2
       console.error("Error uploading image:", error);
     }
 
     setPreviewUrl(fileUri);
     setIsFileProcessing(false);
   };
-//   const processImage = async (fileUri) => {
-//     setIsFileProcessing(true);
-
-//     const formData = new FormData();
-//     formData.append("file", {
-//         uri: fileUri,
-//         name: 'photo.jpg',
-//         type: 'image/jpeg',
-//     });
-
-//     try {
-//         const response = await axios.post("https://f863-2406-7400-bb-7d6d-fba2-a3ca-4f82-79a0.ngrok-free.app/upload", formData, {
-//             headers: {
-//                 'Accept': 'application/json', // Let axios handle content type
-//             },
-//         });
-
-//         if (response.status === 200) {
-//             const data = response.data;
-//             const matchedImagesData = data.matched_images || [];
-//             const matchedImagesUrls = matchedImagesData.map((imageData) => ({
-//                 url: `https://f863-2406-7400-bb-7d6d-fba2-a3ca-4f82-79a0.ngrok-free.app/matched-images/${imageData.file_name}`,
-//                 matchRate: imageData.match_rate,
-//             }));
-
-//             setMatchedImages(matchedImagesUrls);
-//             setUploadCompleted(true);
-//         } else {
-//             console.error("Failed to upload image");
-//         }
-//     } catch (error) {
-//         console.error("Error uploading image:", error.response?.data || error.message);
-//     }
-
-//     setPreviewUrl(fileUri);
-//     setIsFileProcessing(false);
-// };
 
 
   const handleNextImage = () => {
